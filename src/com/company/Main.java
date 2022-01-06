@@ -1,9 +1,6 @@
 package com.company;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import static com.company.Main.Operations.*;
@@ -145,15 +142,19 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        String input = String.join(" ", args);
-        System.out.println("Input: " + input);
-        System.out.print("Output: ");
-        try {
-            System.out.println("" + calc(input));
-        } catch (Exception e) {
-            System.out.println();
-            System.err.println("Исключение: ");
-            e.printStackTrace();
+        System.out.print("Input: ");
+        Scanner scan = new Scanner(System.in);
+        while (scan.hasNextLine()) {
+            String input = scan.nextLine();
+            if (input.length() == 0) {
+                continue;
+            }
+            if (input.toUpperCase().equals("QUIT")) {
+                break;
+            }
+            System.out.println("" + input);
+            System.out.println("Output: " + calc(input));
+            System.out.print("Input: ");
         }
     }
 
