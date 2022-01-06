@@ -15,8 +15,6 @@ public class Main {
         final static String subtraction = "-"; // вычитание
         final static String multiplication = "*"; // умножение
         final static String division = "/"; // целочисленное деление
-//        final static String remainding = "%"; // остаток от деления
-//        final static String exponentiation = "^"; // возведение в степень
     }
 
     static final Map<String, Integer> romanSourceMap = new LinkedHashMap<String, Integer>() {{ // source (adding order is important here, so using LinkedHashMap)
@@ -37,17 +35,6 @@ public class Main {
 
     static Map<String, Integer> rimToIntMap = new HashMap<String, Integer>() {{ // used
         ///put("N",0);
-//        put("I",1);
-//        put("II",2);
-//        put("III",3);
-//        put("IV",4);
-//        put("V",5);
-//        put("VI",6);
-//        put("VII",7);
-//        put("VIII",8);
-//        put("IX",9);
-//        put("X",10);
-//        put("XI",11);
         for (int x=1; x <= 1000; ++x) {
             put(convertToRoman(x), x);
         }
@@ -67,7 +54,7 @@ public class Main {
             int romanI = entry.getValue();
             int q = (int) (Math.floor(num / romanI));
             num -= q * romanI;
-            str +=  String.join("", Collections.nCopies(q, i)); // i repeat q times ///i.repeat(q)
+            str +=  String.join("", Collections.nCopies(q, i)); // new String(new char[q]).replace("\0", i); // i repeat q times ///i.repeat(q)
         }
         return str;
     }
@@ -92,17 +79,6 @@ public class Main {
 
     static int fromRim(String a) {
         a = a.toUpperCase();
-//        a = a.replaceAll("М", "M"); // кириллица (исправление опечатки)
-//        a = a.replaceAll("Л", "L"); // кириллица (исправление опечатки)
-//        a = a.replaceAll("Д", "D"); // кириллица (исправление опечатки)
-//        a = a.replaceAll("Н", "N"); // кириллица (исправление опечатки)
-//        a = a.replaceAll("С", "C"); // кириллица (исправление опечатки)
-//        a = a.replaceAll("Х", "X"); // кириллица (исправление опечатки)
-//        a = a.replaceAll("В", "V"); // кириллица (исправление опечатки)
-//        a = a.replaceAll("П", "V"); // кириллица (исправление опечатки)
-//        a = a.replaceAll("І", "I"); // дорев. кириллица (исправление опечатки)
-//        a = a.replaceAll("Ї", "I"); // укр. кириллица (исправление опечатки)
-//        a = a.replaceAll("Ï", "I"); // фр. латиница (исправление опечатки)
         return rimToIntMap.get(a);
     }
 
