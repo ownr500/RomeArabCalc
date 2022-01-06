@@ -145,7 +145,16 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        System.out.println(calc("VI*IV"));
+        String input = String.join(" ", args);
+        System.out.println("Input: " + input);
+        System.out.print("Output: ");
+        try {
+            System.out.println("" + calc(input));
+        } catch (Exception e) {
+            System.out.println();
+            System.err.println("Исключение: ");
+            e.printStackTrace();
+        }
     }
 
 }
