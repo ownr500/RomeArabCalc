@@ -10,10 +10,10 @@ public class Main {
     class Operations {
         final static String addition = "+"; // сложение
         final static String subtraction = "-"; // вычитание
+        final static String exponentiation = "^"; // возведение в степень
         final static String multiplication = "*"; // умножение
         final static String division = "/"; // целочисленное деление
         final static String remainding = "%"; // остаток от деления
-//        final static String exponentiation = "^"; // возведение в степень
     }
 
     static final Map<String, Integer> romanSourceMap = new LinkedHashMap<String, Integer>() {{ // source (adding order is important here, so using LinkedHashMap)
@@ -69,6 +69,19 @@ public class Main {
         return str;
     }
 
+    static float fastPow (float number, int power) {
+        if (power == 0) {
+            return 1.0f;
+        } else if (power == 1) {
+            return number;
+        } else if (power < 0) {
+            return 1.0f / fastPow(number, -power);
+        } else if (power % 2 == 1) {
+            return fastPow(number, power - 1) * number;
+        } else {
+            return fastPow(number * number, power / 2);
+        }
+    }
 
     static String[] splitByFirstOperation (String expression) { // например "5+6"
         String orPattern = "["+Pattern.quote(addition)+Pattern.quote(subtraction)+Pattern.quote(multiplication)+Pattern.quote(division)+"]";
@@ -145,6 +158,9 @@ public class Main {
                     break;
                 case subtraction:
                     z = x - y;
+                    break;
+                case exponentiation:
+                    z = (int) fastPow(x, y);
                     break;
                 case multiplication:
                     z = x * y;
