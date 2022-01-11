@@ -12,6 +12,8 @@ public class Main {
         final static String subtraction = "-"; // вычитание
         final static String multiplication = "*"; // умножение
         final static String division = "/"; // целочисленное деление
+        final static String remainding = "%"; // остаток от деления
+//        final static String exponentiation = "^"; // возведение в степень
     }
 
     static final Map<String, Integer> romanSourceMap = new LinkedHashMap<String, Integer>() {{ // source (adding order is important here, so using LinkedHashMap)
@@ -149,6 +151,9 @@ public class Main {
                     break;
                 case division:
                     z = x / y;
+                    break;
+                case remainding:
+                    z = x % y;
                     break;
                 default:
                     z = x / 0; // exception for unsupported operation
