@@ -84,7 +84,7 @@ public class Main {
     }
 
     static String[] splitByFirstOperation (String expression) { // например "5+6"
-        String orPattern = "["+Pattern.quote(addition)+Pattern.quote(subtraction)+Pattern.quote(multiplication)+Pattern.quote(division)+"]";
+        String orPattern = "["+Pattern.quote(addition)+Pattern.quote(subtraction)+Pattern.quote(exponentiation)+Pattern.quote(multiplication)+Pattern.quote(division)+Pattern.quote(remainding)+"]";
         expression = expression.trim().replaceAll(orPattern, " $0 "); // surround operation with spaces
 
         String[] result = expression.split(" +"); // разбиваем по operation: + - * /
