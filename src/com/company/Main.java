@@ -31,8 +31,8 @@ public class Main {
     }};
 
     static Map<String, Integer> rimToIntMap = new HashMap<String, Integer>() {{ // used
-        ///put("N",0);
-        for (int x=1; x <= 1000; ++x) {
+        put("N",0);
+        for (int x=1; x <= 10000; ++x) {
             put(convertToRoman(x), x);
         }
     }};
@@ -112,7 +112,7 @@ public class Main {
         }
 
         String zStr = null;
-        if (x<1 || x>10 || y<1 || y>10) { // incorrect input
+        if (x<0 || x>100 || y<0 || y>100) { // incorrect input
         } else {
             int z;
             switch (operation) {
@@ -142,19 +142,15 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        System.out.print("Input: ");
-        Scanner scan = new Scanner(System.in);
-        while (scan.hasNextLine()) {
-            String input = scan.nextLine();
-            if (input.length() == 0) {
-                continue;
-            }
-            if (input.toUpperCase().equals("QUIT")) {
-                break;
-            }
-            System.out.println("" + input);
-            System.out.println("Output: " + calc(input));
-            System.out.print("Input: ");
+        String input = String.join(" ", args);
+        System.out.println("Input: " + input);
+        System.out.print("Output: ");
+        try {
+            System.out.println("" + calc(input));
+        } catch (Exception e) {
+            System.out.println();
+            System.err.println("Exception: ");
+            e.printStackTrace();
         }
     }
 
