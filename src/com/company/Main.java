@@ -32,6 +32,17 @@ public class Main {
 
     static Map<String, Integer> rimToIntMap = new HashMap<String, Integer>() {{ // used
         put("N",0);
+//        put("I",1);
+//        put("II",2);
+//        put("III",3);
+//        put("IV",4);
+//        put("V",5);
+//        put("VI",6);
+//        put("VII",7);
+//        put("VIII",8);
+//        put("IX",9);
+//        put("X",10);
+//        put("XI",11);
         for (int x=1; x <= 10000; ++x) {
             put(convertToRoman(x), x);
         }
@@ -76,6 +87,17 @@ public class Main {
 
     static int fromRim(String a) {
         a = a.toUpperCase();
+        a = a.replaceAll("М", "M"); // кириллица (исправление опечатки)
+        a = a.replaceAll("Л", "L"); // кириллица (исправление опечатки)
+        a = a.replaceAll("Д", "D"); // кириллица (исправление опечатки)
+        a = a.replaceAll("Н", "N"); // кириллица (исправление опечатки)
+        a = a.replaceAll("С", "C"); // кириллица (исправление опечатки)
+        a = a.replaceAll("Х", "X"); // кириллица (исправление опечатки)
+        a = a.replaceAll("В", "V"); // кириллица (исправление опечатки)
+        a = a.replaceAll("П", "V"); // кириллица (исправление опечатки)
+        a = a.replaceAll("І", "I"); // дорев. кириллица (исправление опечатки)
+        a = a.replaceAll("Ї", "I"); // укр. кириллица (исправление опечатки)
+        a = a.replaceAll("Ï", "I"); // фр. латиница (исправление опечатки)
         return rimToIntMap.get(a);
     }
 
