@@ -10,10 +10,11 @@ public class Main {
     class Operations {
         final static String addition = "+"; // сложение
         final static String subtraction = "-"; // вычитание
-        final static String exponentiation = "^"; // возведение в степень
+        final static String exponentiation = "^"; // возведение левого числа в степень (справа)
         final static String multiplication = "*"; // умножение
         final static String division = "/"; // целочисленное деление
         final static String remainding = "%"; // остаток от деления
+        final static String logarithm = "b"; // логарифм левого числа по основанию (справа)
     }
 
     static final Map<String, Integer> romanSourceMap = new LinkedHashMap<String, Integer>() {{ // source (adding order is important here, so using LinkedHashMap)
@@ -83,8 +84,12 @@ public class Main {
         }
     }
 
+    static float logY(float x, int y) {
+        return (float) (Math.log(x) / Math.log(y));
+    }
+
     static String[] splitByFirstOperation (String expression) { // например "5+6"
-        String orPattern = "["+Pattern.quote(addition)+Pattern.quote(subtraction)+Pattern.quote(exponentiation)+Pattern.quote(multiplication)+Pattern.quote(division)+Pattern.quote(remainding)+"]";
+        String orPattern = "["+Pattern.quote(addition)+Pattern.quote(subtraction)+Pattern.quote(exponentiation)+Pattern.quote(multiplication)+Pattern.quote(division)+Pattern.quote(remainding)+Pattern.quote(logarithm)+"]";
         expression = expression.trim().replaceAll(orPattern, " $0 "); // surround operation with spaces
 
         String[] result = expression.split(" +"); // разбиваем по operation: + - * /
@@ -126,6 +131,8 @@ public class Main {
     }
 
     public static String calc(String input) {
+        input = input.replaceAll("ь", "b"); // кириллица (исправление опечатки)
+        input = input.replaceAll("Ь", "b"); // кириллица (исправление опечатки)
         String[] lr = splitByFirstOperation(input);
 
         String a = lr[0];
@@ -170,6 +177,9 @@ public class Main {
                     break;
                 case remainding:
                     z = x % y;
+                    break;
+                case logarithm:
+                    z = (int) logY(x, y);
                     break;
                 default:
                     z = x / 0; // exception for unsupported operation
