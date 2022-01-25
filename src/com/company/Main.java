@@ -1,4 +1,8 @@
 package com.company;
+/**
+ * RomeArabCalc
+ * @license MIT
+ */
 
 import java.util.*;
 import java.util.regex.Pattern;
