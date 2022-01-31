@@ -22,6 +22,18 @@ public class Main {
     }
 
     static final Map<String, Integer> romanSourceMap = new LinkedHashMap<String, Integer>() {{ // source (adding order is important here, so using LinkedHashMap)
+        put("M̅", 1000000);
+        put("C̅M̅", 900000);
+        put("D̅",  500000);
+        put("C̅D̅", 400000);
+        put("C̅",  100000);
+        put("X̅C̅",  90000);
+        put("L̅",   50000);
+        put("X̅L̅",  40000);
+        put("X̅",   10000);
+        put("I̅X̅",   9000); // or "MX̅"
+        put("V̅",    5000);
+        put("I̅V̅",   4000); // or "MV̅"
         put("M",1000);
         put("CM",900);
         put("D", 500);
@@ -50,8 +62,11 @@ public class Main {
 //        put("IX",9);
 //        put("X",10);
 //        put("XI",11);
-        for (int x=1; x <= 10000; ++x) {
-            put(convertToRoman(x), x);
+        for (int x=1; x <= 100000; ++x) {
+            put(_convertToRoman(x), x);
+        }
+        for (int y=1; y <= 1000; ++y) { // warning
+            put(_convertToRoman(y*1000), y*1000);
         }
     }};
 
@@ -62,7 +77,7 @@ public class Main {
         }
     }
 
-    static String convertToRoman(int num) {
+    static String _convertToRoman(int num) {
         String str = "";
         for (Map.Entry<String, Integer> entry : romanSourceMap.entrySet()) {
             String i = entry.getKey();
@@ -106,7 +121,11 @@ public class Main {
 
 
     static String toRim(int x) {
-        return intToRimMap.get(x);
+		String result = intToRimMap.get(x);
+		if (result == null) {
+			result = _convertToRoman(x);
+		}
+        return result;
     }
 
     static int fromRim(String a) {
@@ -160,7 +179,7 @@ public class Main {
         }
 
         String zStr = null;
-        if (x<0 || x>100 || y<0 || y>100) { // incorrect input
+        if (x<0 || x>1000000 || y<0 || y>1000000) { // incorrect input
         } else {
             int z;
             switch (operation) {
