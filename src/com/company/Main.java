@@ -20,6 +20,8 @@ public class Main {
         final static String remainding = "%"; // остаток от деления
         final static String logarithm = "b"; // логарифм левого числа по основанию (справа)
     }
+    
+    static final int floatQuality = 3; // число знаков после запятой для float
 
     static final Map<String, Integer> romanSourceMap = new LinkedHashMap<String, Integer>() {{ // source (adding order is important here, so using LinkedHashMap)
         put("M",1000);
@@ -51,7 +53,7 @@ public class Main {
 //        put("X",10);
 //        put("XI",11);
         for (int x=1; x <= 10000; ++x) {
-            put(convertToRoman(x), x);
+            put(_convertToRoman(x), x);
         }
     }};
 
@@ -62,7 +64,7 @@ public class Main {
         }
     }
 
-    static String convertToRoman(int num) {
+    static String _convertToRoman(int num) {
         String str = "";
         for (Map.Entry<String, Integer> entry : romanSourceMap.entrySet()) {
             String i = entry.getKey();
@@ -104,6 +106,21 @@ public class Main {
         }
     }
 
+	static String toRimFloat(float x) {
+//		System.out.println("ZZZ:"+x);
+		int d = (int)fastPow(10, floatQuality);
+		
+		x *= d;
+		int a = (int)(x / d);
+		int b = (int)(x % d);
+		
+//		System.out.println("a,b:"+a+"."+b);
+		
+		String b0 = toRim(a).toString();
+		String b1 = mirrorStr(toRim(Integer.parseInt(mirrorStr(""+b))).toLowerCase());
+//		System.out.println("b:"+b0+"."+b1);
+        return b0+'.'+b1;
+    }
 
     static String toRim(int x) {
         return intToRimMap.get(x);
@@ -124,13 +141,49 @@ public class Main {
         a = a.replaceAll("Ï", "I"); // фр. латиница (исправление опечатки)
         return rimToIntMap.get(a);
     }
+    
+	static float fromRimFloat(String a) {
+		String[] a2 = a.split("\\.");
+		String b0 = null;
+		String b1 = null;
+		if (a2.length != 2) {
+			if (a2.length == 1) {
+				return (float)fromRim(a);
+			} else {
+				return Float.parseFloat(null);
+			}
+		}
+		b0 = new Integer(fromRim(a2[0])).toString();
+//		System.out.println("b0"+b0);
+		b1 = mirrorStr(new Integer(fromRim(mirrorStr(a2[1].toLowerCase().equals(a2[1]) ? a2[1] : null).toUpperCase())).toString());
+//		System.out.println(b0+'.'+b1);
+        return Float.parseFloat(b0+'.'+b1);
+    }
+    
+    static String mirrorStr (String sourceStr) {
+		String result = "";
+		///System.out.println("sourceStr:"+sourceStr);
+		for (int i=0; i<sourceStr.length(); ++i) {
+			result += ""+sourceStr.charAt(sourceStr.length() - 1 - i);
+		}
+		return result;
+	}
 
     static String toArab(int x) {
         return Integer.toString(x);
     }
+    
+    static String toArabFloat(float x) {
+        return Float.toString(x);
+    }
 
     static int fromArab(String a) {
         int x = Integer.parseInt(a);
+        return x;
+    }
+    
+    static float fromArabFloat(String a) {
+        float x = Float.parseFloat(a);
         return x;
     }
 
@@ -143,26 +196,26 @@ public class Main {
         String b = lr[1];
         final String operation = lr[2];
 
-        int x = 0;
-        int y = 0;
+        float x = 0;
+        float y = 0;
 
         boolean isArab = true;
         try {
-            x = fromArab(a);
+            x = fromArabFloat(a);
         } catch (Exception e) {
-            x = fromRim(a);
+            x = fromRimFloat(a);
             isArab = false;
         }
         if (isArab) {
-            y = fromArab(b);
+            y = fromArabFloat(b);
         } else {
-            y = fromRim(b);
+            y = fromRimFloat(b);
         }
 
         String zStr = null;
         if (x<0 || x>100 || y<0 || y>100) { // incorrect input
         } else {
-            int z;
+            float z;
             switch (operation) {
                 case addition:
                     z = x + y;
@@ -170,7 +223,7 @@ public class Main {
                 case subtraction:
                     z = x - y;
                     break;
-                case exponentiation:
+                /*case exponentiation:
                     z = (int) fastPow(x, y);
                     break;
                 case multiplication:
@@ -184,15 +237,15 @@ public class Main {
                     break;
                 case logarithm:
                     z = (int) logY(x, y);
-                    break;
+                    break;*/
                 default:
                     z = x / 0; // exception for unsupported operation
             }
 
             if (isArab) {
-                zStr = toArab(z);
+                zStr = toArabFloat(z); ///
             } else {
-                zStr = toRim(z);
+                zStr = toRimFloat(z); ///
             }
         }
         return zStr.toString();  // toString for throws exception in case of wrong null
