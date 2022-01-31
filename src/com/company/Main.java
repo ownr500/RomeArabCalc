@@ -88,6 +88,43 @@ public class Main {
         }
         return str;
     }
+    
+	static Integer _convertFromRoman(String romanNumStr) {
+        Integer num = 0;
+        String[] romanNumStrSymbols = new String[romanNumStr.length()+1]; //romanNumStr.toCharArray(); ///romanNumStr.split("(?!^)");
+        int j = 0;
+        for (int i=0; i<romanNumStr.length(); ++i) {
+			if (i<romanNumStr.length()-1 && romanNumStr.charAt(i+1) == "M̅".charAt(1)) {
+				romanNumStrSymbols[j] = ""+romanNumStr.charAt(i)+romanNumStr.charAt(i+1);
+				++i;
+			} else {
+				romanNumStrSymbols[j] = ""+romanNumStr.charAt(i);
+			}
+			j++;
+			///System.err.println("\n"+romanNumStrSymbols[j]+',');
+		}
+		int lenFull = j;
+		
+		j = lenFull - 1;
+		int maxH = 0;
+		while (j >= 0) {
+			Integer h = rimToIntMap.get(romanNumStrSymbols[j--]);
+			if (h != null) {
+				if (h >= maxH) {
+					num += h;
+					maxH = h;
+				} else {
+					num -= h;
+					maxH = h+1; ///
+				}
+			} else {
+				///System.err.println("NULL");
+				return null;
+			}
+		}
+		///System.err.println("num: "+num);
+        return num;
+    }
 
     static float fastPow (float number, int power) {
         if (power == 0) {
@@ -141,7 +178,11 @@ public class Main {
         a = a.replaceAll("І", "I"); // дорев. кириллица (исправление опечатки)
         a = a.replaceAll("Ї", "I"); // укр. кириллица (исправление опечатки)
         a = a.replaceAll("Ï", "I"); // фр. латиница (исправление опечатки)
-        return rimToIntMap.get(a);
+        Integer result = rimToIntMap.get(a);
+        if (result == null) {
+			result = _convertFromRoman(a);
+		}
+		return result;
     }
 
     static String toArab(int x) {
@@ -179,7 +220,7 @@ public class Main {
         }
 
         String zStr = null;
-        if (x<0 || x>1000000 || y<0 || y>1000000) { // incorrect input
+        if (x<0 || y<0) { // incorrect input
         } else {
             int z;
             switch (operation) {
