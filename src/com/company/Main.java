@@ -307,6 +307,7 @@ public class Main {
     }
 
     public static String calc(String input) {
+		String zStr = null;
         input = input.replaceAll("ь", "b"); // кириллица (исправление опечатки)
         input = input.replaceAll("Ь", "b"); // кириллица (исправление опечатки)
         String[] lr = splitByFirstOperation(input);
@@ -320,52 +321,85 @@ public class Main {
 
         boolean isArab = true;
         try {
-            x = fromArabFloat(a);
-        } catch (Exception e) {
-            x = fromRimFloat(a);
-            isArab = false;
-        }
-        if (isArab) {
-            y = fromArabFloat(b);
-        } else {
-            y = fromRimFloat(b);
-        }
+			try {
+				x = fromArabFloat(a);
+			} catch (Exception e) {
+				x = fromRimFloat(a);
+				isArab = false;
+			}
+			if (isArab) {
+				y = fromArabFloat(b);
+			} else {
+				y = fromRimFloat(b);
+				if (new Integer(0).equals(_partialRound(y))) {
+					y = 0.0f;
+				} else if (new Integer(1).equals(_partialRound(y))) {
+					y = 1.0f;
+				}
+			}
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			System.err.println("ERROR: wrong input");
+			x = -1;
+			y = -1;
+			zStr = null;
+			return zStr.toString();
+		}
 
-        String zStr = null;
         if (x<0 || y<0) { // incorrect input
+			System.err.println("ERROR: unsupported input, negative or too big numbers");
+			zStr = null;
         } else {
-            float z;
-            switch (operation) {
-                case addition:
-                    z = x + y;
-                    break;
-                case subtraction:
-                    z = x - y;
-                    break;
-                case exponentiation:
-                    z = fastPow(x, y);
-                    break;
-                case multiplication:
-                    z = x * y;
-                    break;
-                case division:
-                    z = x / y;
-                    break;
-                case remainding:
-                    z = x % y;
-                    break;
-                case logarithm:
-                    z = logY(x, y);
-                    break;
-                default:
-                    z = 1 / 0; // exception for unsupported operation
+            Float z = null;
+            try {
+				if ((operation.equals(division) || operation.equals(remainding)) && (y == 0.0f || y == -0.0f)) {
+					z = (float)(1 / 0);
+				} else {
+					switch (operation) {
+						case addition:
+							z = x + y;
+							break;
+						case subtraction:
+							z = x - y;
+							break;
+						case exponentiation:
+							z = fastPow(x, y);
+							break;
+						case multiplication:
+							z = x * y;
+							break;
+						case division:
+							z = x / y;
+							break;
+						case remainding:
+							z = x % y;
+							break;
+						case logarithm:
+							z = logY(x, y);
+							break;
+						default:
+							z = (float)(1 / 0); // exception for unsupported operation
+					}
             }
-
-            if (isArab) {
-                zStr = toArabFloat(z); ///
-            } else {
-                zStr = toRimFloat(z); ///
-            }
+			} catch (Exception e2) {
+				System.err.println("ERROR: unsupported operation or error within operation");
+				z = null;
+			}
+			if (z != null) {
+				try {
+					if (isArab) {
+						zStr = toArabFloat(z); ///
+					} else {
+						zStr = toRimFloat(z); ///
+					}
+				} catch (Exception e3) {
+					e3.printStackTrace();
+					System.err.println("ERROR: result overflow or convertion error");
+					zStr = null;
+				}
+			} else {
+				zStr = null;
+			}
         }
         return zStr.toString();  // toString for throws exception in case of wrong null
     }
