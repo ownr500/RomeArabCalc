@@ -224,7 +224,11 @@ public class Main {
 		String b0 = toRim(a).toString();
 		String b1 = mirrorStr(toRim(Integer.parseInt(mirrorStr(""+b))).toLowerCase());
 //		System.out.println("b:"+b0+"."+b1);
-        return b0+'.'+b1;
+		if (b1.equals("n")) {
+			return b0;
+		} else {
+			return b0+"."+b1;
+		}
     }
 
     static String toRim(int x) {
