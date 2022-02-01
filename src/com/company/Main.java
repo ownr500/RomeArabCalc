@@ -4,6 +4,8 @@ package com.company;
  * @license MIT
  */
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -305,6 +307,14 @@ public class Main {
         float x = Float.parseFloat(a);
         return x;
     }
+	static double calcPi(int precision){
+		double pi = 1;
+		int numberOfIterations = 100000;
+		for (double i = 1; i < numberOfIterations+1; i++) {
+			pi  *= ((2*i)/(2*i - 1)) * ((2*i)/(2*i + 1));
+		}
+		return BigDecimal.valueOf(pi*2).setScale(precision, RoundingMode.HALF_UP).doubleValue();
+	}
 
     public static String calc(String input) {
 		String zStr = null;
