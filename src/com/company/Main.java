@@ -22,6 +22,8 @@ public class Main {
     }
 
     static final int floatQuality = 3; // число знаков после запятой для float
+    static final float accuracy = fastPow(10, -floatQuality);
+    static final float accuracyMulter = fastPow(10, floatQuality);
 
     static final boolean allowMoreForce = false; ///
 
@@ -174,8 +176,26 @@ public class Main {
             return fastPow(number * number, power / 2);
         }
     }
+    
+    static float fastPow (float number, float power) {
+		Integer powerN = _partialRound (power);
+		if (powerN != null) {
+			return fastPow(number, (int)powerN);
+		} else {
+			return (float)Math.pow(number, power);
+		}
+	}
+	
+	static Integer _partialRound (float number) {
+		float r = accuracyMulter*(number-accuracy) - accuracyMulter*(number);
+		if (r >= -0.1 && r <= 0.1) {
+			return (int)number;
+		} else {
+			return null;
+		}
+	}
 
-    static float logY(float x, int y) {
+    static float logY(float x, float y) {
         return (float) (Math.log(x) / Math.log(y));
     }
 
@@ -316,8 +336,8 @@ public class Main {
                 case subtraction:
                     z = x - y;
                     break;
-                /*case exponentiation:
-                    z = (int) fastPow(x, y);
+                case exponentiation:
+                    z = fastPow(x, y);
                     break;
                 case multiplication:
                     z = x * y;
@@ -329,10 +349,10 @@ public class Main {
                     z = x % y;
                     break;
                 case logarithm:
-                    z = (int) logY(x, y);
-                    break;*/
+                    z = logY(x, y);
+                    break;
                 default:
-                    z = x / 0; // exception for unsupported operation
+                    z = 1 / 0; // exception for unsupported operation
             }
 
             if (isArab) {
