@@ -20,6 +20,8 @@ public class Main {
         final static String remainding = "%"; // остаток от деления
         final static String logarithm = "b"; // логарифм левого числа по основанию (справа)
     }
+    
+    final static boolean allowMoreForce = true; ///
 
     static final Map<String, Integer> romanSourceMap = new LinkedHashMap<String, Integer>() {{ // source (adding order is important here, so using LinkedHashMap)
         put("M̅", 1000000);
@@ -62,7 +64,7 @@ public class Main {
 //        put("IX",9);
 //        put("X",10);
 //        put("XI",11);
-        for (int x=1; x <= 100000; ++x) {
+        for (int x=1; x <= 10000; ++x) {
             put(_convertToRoman(x), x);
         }
         for (int y=1; y <= 1000; ++y) { // warning
@@ -106,20 +108,51 @@ public class Main {
 		int lenFull = j;
 		
 		j = lenFull - 1;
-		int maxH = 0;
+		int maxH = -1; // последняя проверенная римская цифра
+		int k = 0; // количество повторов последней цифры
+		boolean lastWasPlus = true;
 		while (j >= 0) {
 			Integer h = rimToIntMap.get(romanNumStrSymbols[j--]);
 			if (h != null) {
-				if (h >= maxH) {
-					num += h;
-					maxH = h;
+				if (h == 0) {
+//					System.err.println("k += 3");
+					k += 3;
+				} else if (h != maxH) {
+//					System.err.println("k = 1");
+					k = 1;
 				} else {
-					num -= h;
-					maxH = h+1; ///
+//					System.err.println("++k");
+					++k;
 				}
+//				System.err.println("\n k:"+k);
+				if (k > 3) {
+					if (!allowMoreForce) {
+						num = null;
+						break;
+					}
+				}
+				if (h > maxH) {
+					lastWasPlus = true;
+				}
+				if (h >= maxH && (lastWasPlus || allowMoreForce)) {
+					num += h;
+					lastWasPlus = true;
+				} else {
+					if ((lastWasPlus || allowMoreForce) && 10*h >= maxH && h == Math.round(fastPow(10, (int)logY(h, 10)))) {
+						num -= h;
+					} else {
+						num = null;
+						break;
+					}
+					lastWasPlus = false;
+				}
+				if (h >= maxH || allowMoreForce) {
+					maxH = h;
+				}
+//				System.err.println("maxH:"+maxH);
 			} else {
-				///System.err.println("NULL");
-				return null;
+				num = null;
+				break;
 			}
 		}
 		///System.err.println("num: "+num);
@@ -207,6 +240,7 @@ public class Main {
         int y = 0;
 
         boolean isArab = true;
+
         try {
             x = fromArab(a);
         } catch (Exception e) {
