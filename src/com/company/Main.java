@@ -240,7 +240,9 @@ public class Main {
     }
 
     static int fromRim(String a) {
-        a = a.toUpperCase();
+		if (!a.toUpperCase().equals(a)) {
+			return 2/0;
+		}
         a = a.replaceAll("М", "M"); // кириллица (исправление опечатки)
         a = a.replaceAll("Л", "L"); // кириллица (исправление опечатки)
         a = a.replaceAll("Д", "D"); // кириллица (исправление опечатки)
