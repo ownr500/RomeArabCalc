@@ -23,7 +23,7 @@ public class Main {
 
     static final int floatQuality = 3; // число знаков после запятой для float
 
-    static final boolean allowMoreForce = true; ///
+    static final boolean allowMoreForce = false; ///
 
     static final Map<String, Integer> romanSourceMap = new LinkedHashMap<String, Integer>() {{ // source (adding order is important here, so using LinkedHashMap)
         put("M̅", 1000000);
