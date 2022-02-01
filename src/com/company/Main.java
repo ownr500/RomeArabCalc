@@ -307,13 +307,26 @@ public class Main {
         float x = Float.parseFloat(a);
         return x;
     }
-	static double calcPi(int precision){
+	static BigDecimal calcPi(int precision){
 		double pi = 1;
 		int numberOfIterations = 100000;
 		for (double i = 1; i < numberOfIterations+1; i++) {
 			pi  *= ((2*i)/(2*i - 1)) * ((2*i)/(2*i + 1));
 		}
-		return BigDecimal.valueOf(pi*2).setScale(precision, RoundingMode.HALF_UP).doubleValue();
+		return new BigDecimal(pi*2).setScale(precision, RoundingMode.HALF_UP);
+	}
+
+	static String showPi(int precision) throws Exception {
+		String result = "Pi with " + precision + " precision:\n";
+		if (precision < 0 || precision > 8) {
+			throw new Exception("Invalid precision");
+		}
+		BigDecimal pi;
+		for (int i = 1; i < precision + 1; i++ ) {
+			result += "\n" + calcPi(i)  + String.format("%-" + Math.abs(precision +3 - i) + "s", "");
+			result += toRimFloat(calcPi(i).floatValue());
+		}
+		return result;
 	}
 
     public static String calc(String input) {
@@ -425,6 +438,12 @@ public class Main {
             System.err.println("Exception: ");
             e.printStackTrace();
         }
+		try {
+			System.out.println(showPi(8));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
     }
 
 }
