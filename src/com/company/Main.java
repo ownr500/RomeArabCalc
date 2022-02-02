@@ -211,9 +211,11 @@ public class Main {
         }
     }
 
-	static String toRimFloat(float x) {
+	static String toRimFloat(float x) { // may be negative too
 //		System.out.println("ZZZ:"+x);
 		int d = (int)fastPow(10, floatQuality);
+		int mult = (x >= 0) ? (1) : (-1);
+		x = x * mult; // abs
 
 		x *= d;
 		int a = (int)(x / d);
@@ -223,15 +225,16 @@ public class Main {
 
 		String b0 = toRim(a).toString();
 		String b1 = mirrorStr(toRim(Integer.parseInt(mirrorStr(""+b))).toLowerCase());
+		String pref = (mult > 0) ? ("") : ("-");
 //		System.out.println("b:"+b0+"."+b1);
 		if (b1.equals("n")) {
-			return b0;
+			return pref+b0;
 		} else {
-			return b0+"."+b1;
+			return pref+b0+"."+b1;
 		}
     }
 
-    static String toRim(int x) {
+    static String toRim(int x) { // only 0 and positive integers
 		String result = intToRimMap.get(x);
 		if (result == null) {
 			result = _convertToRoman(x);
