@@ -12,6 +12,7 @@ import static com.company.Main.Operations.*;
 public class Main {
 
     class Operations {
+        final static String tilde = "~"; // вызов функции (справа)
         final static String addition = "+"; // сложение
         final static String subtraction = "-"; // вычитание
         final static String exponentiation = "^"; // возведение левого числа в степень (справа)
@@ -200,7 +201,7 @@ public class Main {
     }
 
     static String[] splitByFirstOperation (String expression) { // например "5+6"
-        String orPattern = "["+Pattern.quote(addition)+Pattern.quote(subtraction)+Pattern.quote(exponentiation)+Pattern.quote(multiplication)+Pattern.quote(division)+Pattern.quote(remainding)+Pattern.quote(logarithm)+"]";
+        String orPattern = "["+Pattern.quote(tilde)+Pattern.quote(addition)+Pattern.quote(subtraction)+Pattern.quote(exponentiation)+Pattern.quote(multiplication)+Pattern.quote(division)+Pattern.quote(remainding)+Pattern.quote(logarithm)+"]";
         expression = expression.trim().replaceAll(orPattern, " $0 "); // surround operation with spaces
 
         String[] result = expression.split(" +"); // разбиваем по operation: + - * /
@@ -321,6 +322,7 @@ public class Main {
 
         float x = 0;
         float y = 0;
+        String tildeCall = null;
 
         boolean isArab = true;
         try {
@@ -330,6 +332,9 @@ public class Main {
 				x = fromRimFloat(a);
 				isArab = false;
 			}
+			if (operation.equals("~")) {
+				tildeCall = b;
+			} else {
 			if (isArab) {
 				y = fromArabFloat(b);
 			} else {
@@ -339,6 +344,7 @@ public class Main {
 				} else if (new Integer(1).equals(_partialRound(y))) {
 					y = 1.0f;
 				}
+			}
 			}
 		} catch (Exception e1) {
 			e1.printStackTrace();
@@ -359,6 +365,31 @@ public class Main {
 					z = (float)(1 / 0);
 				} else {
 					switch (operation) {
+						case tilde:
+							switch (tildeCall) {
+								case "TOARAB":
+									if (!isArab) {
+										z = fromRimFloat(a);
+										zStr = toArabFloat(z);
+									} else {
+										zStr = a;
+									}
+									break;
+								case "TOROMAN":
+									if (!isArab) {
+										zStr = a;
+									} else {
+										z = fromArabFloat(a);
+										zStr = toRimFloat(z);
+									}
+									break;
+								case "TORIM":
+									zStr = "В Италию, на родину музыки!";
+									break;
+								default:
+									zStr = null;								
+							}
+							return zStr.toString();
 						case addition:
 							z = x + y;
 							break;
