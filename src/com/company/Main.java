@@ -25,6 +25,7 @@ public class Main {
     static final int floatQuality = 3; // число знаков после запятой для float
     static final float accuracy = fastPow(10, -floatQuality);
     static final float accuracyMulter = fastPow(10, floatQuality);
+    static boolean isArab;
 
     static final boolean allowMoreForce = false; ///
 
@@ -309,6 +310,32 @@ public class Main {
         float x = Float.parseFloat(a);
         return x;
     }
+    
+    static Integer factorial(int n) {
+		if (n < 0) {
+			return null;
+		} else if (n == 0 || n == 1) {
+			return 1;
+		} else {
+			return n*factorial(n-1);
+		}
+	}
+    
+    static String _zStr(float z) {
+		String zStr;
+		try {
+			if (isArab) {
+				zStr = toArabFloat(z); ///
+			} else {
+				zStr = toRimFloat(z); ///
+			}
+		} catch (Exception e3) {
+			e3.printStackTrace();
+			System.err.println("ERROR: result overflow or convertion error");
+			zStr = null;
+		}
+		return zStr;
+	}
 
     public static String calc(String input) {
 		String zStr = null;
@@ -324,7 +351,7 @@ public class Main {
         float y = 0;
         String tildeCall = null;
 
-        boolean isArab = true;
+        isArab = true;
         try {
 			try {
 				x = fromArabFloat(a);
@@ -367,6 +394,18 @@ public class Main {
 					switch (operation) {
 						case tilde:
 							switch (tildeCall) {
+								case "ABS":
+									z = (x >= 0) ? (x) : (-x);
+									zStr = _zStr(z);
+									break;
+								case "MINUS":
+									z = -x;
+									zStr = _zStr(z);
+									break;
+								case "FACTORIAL":
+									z = (float)factorial((int)x); ///
+									zStr = _zStr(z);
+									break;
 								case "TOARAB":
 									if (!isArab) {
 										z = fromRimFloat(a);
@@ -420,17 +459,7 @@ public class Main {
 				z = null;
 			}
 			if (z != null) {
-				try {
-					if (isArab) {
-						zStr = toArabFloat(z); ///
-					} else {
-						zStr = toRimFloat(z); ///
-					}
-				} catch (Exception e3) {
-					e3.printStackTrace();
-					System.err.println("ERROR: result overflow or convertion error");
-					zStr = null;
-				}
+				zStr = _zStr(z);
 			} else {
 				zStr = null;
 			}
