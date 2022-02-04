@@ -4,13 +4,13 @@ package quickstart;
  * @license MIT
  */
 
-import static def.dom.Globals.alert;
-import static def.jquery.Globals.$;
+/////import static def.dom.Globals.alert;
+/////import static def.jquery.Globals.$;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import def.js.Array;
+/////import def.js.Array;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -471,29 +471,17 @@ public class QuickStart {
         return zStr.toString();  // toString for throws exception in case of wrong null
     }
 
-    public static void main(String[] args) {
-		// you can use regular Java API
-		List<String> l = new ArrayList<>();
-		l.add("Hello");
-		l.add("world");
-		// and you can also use regular JavaScript APIs
-		Array<String> a = new Array<>();
-		a.push("Hello", "world");
-		// use of jQuery with the jQuery candy
-		$("#target").text(l.toString());
-		// use of the JavaScript DOM API
-		alert(a.toString());	
-		
-/////        String input = String.join(" ", args);
-/////        System.out.println("Input: " + input);
+    public static void main(String[] args) {	
+        String input = String.join(" ", args);
+        System.out.println("Input: " + input);
         System.out.print("Output: ");
-/////        try {
-/////            System.out.println("" + calc(input));
-/////        } catch (Exception e) {
+        try {
+            System.out.println("" + calc(input));
+        } catch (Exception e) {
             System.out.println();
-/////            System.err.println("Exception: ");
-/////            e.printStackTrace();
-/////        }
+            System.err.println("Exception: ");
+            e.printStackTrace();
+        }
     }
 
 }
