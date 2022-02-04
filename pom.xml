@@ -21,9 +21,9 @@
 		</license>
 	</licenses>
 	<properties>
-		<jsweet.transpiler.version>2.3.6</jsweet.transpiler.version>
+		<!--<jsweet.transpiler.version>2.3.6</jsweet.transpiler.version>-->
 		<!--<jsweet.transpiler.version>2.3.8</jsweet.transpiler.version>-->
-		<!--<jsweet.transpiler.version>2.3.0-SNAPSHOT</jsweet.transpiler.version>-->
+		<jsweet.transpiler.version>2.3.0-SNAPSHOT</jsweet.transpiler.version>
 		<!--<jsweet.j4ts.version>2.1.0-SNAPSHOT</jsweet.j4ts.version>-->
 		<!--<jsweet.j4ts.version>0.6.0</jsweet.j4ts.version>-->
 		<!--<jsweet.j4ts.version>2.0.0</jsweet.j4ts.version>-->
@@ -63,7 +63,8 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<!--<version>3.8.1</version>-->
+				<version>3.1</version>
 				<configuration>
 					<release>${java.version.release}</release>
 					<compilerVersion>${java.version}</compilerVersion>
@@ -83,8 +84,8 @@
 					<tsOut>target/ts</tsOut>
 					<outDir>target/js</outDir>
 					<candiesJsOut>target/candies</candiesJsOut>
-					<!--<targetVersion>ES6</targetVersion>-->
-					<targetVersion>ES5</targetVersion>
+					<targetVersion>ES6</targetVersion>
+					<!--<targetVersion>ES5</targetVersion>-->
 					<!--<targetVersion>ES3</targetVersion>-->
 					<module>none</module>
 					<moduleResolution>classic</moduleResolution>
