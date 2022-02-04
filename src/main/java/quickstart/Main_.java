@@ -11,7 +11,7 @@ import def.js.Array;
 /**
  * This class is used within the webapp/index.html file.
  */
-public class QuickStart {
+public class Main_ {
 
 	public static void main(String[] args) {
 		

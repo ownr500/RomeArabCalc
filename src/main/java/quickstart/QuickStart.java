@@ -15,11 +15,8 @@ import def.js.Array;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import static quickstart.Operations.*;
-
 public class QuickStart {
 
-    class Operations {
         final static String tilde = "~"; // вызов функции (справа)
         final static String addition = "+"; // сложение
         final static String subtraction = "-"; // вычитание
@@ -28,7 +25,6 @@ public class QuickStart {
         final static String division = "/"; // целочисленное деление
         final static String remainding = "%"; // остаток от деления
         final static String logarithm = "b"; // логарифм левого числа по основанию (справа)
-    }
 
     static final int floatQuality = 3; // число знаков после запятой для float
     static final float accuracy = fastPow(10, -floatQuality);
