@@ -20,6 +20,18 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+	<properties>
+		<jsweet.transpiler.version>2.3.8</jsweet.transpiler.version>
+		<!--<jsweet.transpiler.version>2.3.0-SNAPSHOT</jsweet.transpiler.version>-->
+		<!--<jsweet.j4ts.version>2.1.0-SNAPSHOT</jsweet.j4ts.version>-->
+		<!--<jsweet.j4ts.version>0.6.0</jsweet.j4ts.version>-->
+		<!--<jsweet.j4ts.version>2.0.0</jsweet.j4ts.version>-->
+		<jsweet.j4ts.version>0.7.0-SNAPSHOT</jsweet.j4ts.version>
+
+		<java.version.release>8</java.version.release>
+		<java.version>1.${java.version.release}</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<pluginRepositories>
 		<pluginRepository>
 			<id>jsweet-plugins-release</id>
@@ -50,27 +62,32 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<version>3.8.1</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<release>${java.version.release}</release>
+					<compilerVersion>${java.version}</compilerVersion>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
 					<fork>true</fork>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.jsweet</groupId>
 				<artifactId>jsweet-maven-plugin</artifactId>
-				<!--<version>2.3.0-SNAPSHOT</version>-->
-				<version>2.2.0-SNAPSHOT</version>
+				<version>${jsweet.transpiler.version}</version>
+				<!--<version>2.2.0-SNAPSHOT</version>-->
 				<configuration>
 					<verbose>true</verbose>
 					<tsOut>target/ts</tsOut>
 					<outDir>target/js</outDir>
-					<candiesJsOut>webapp</candiesJsOut>
-					<targetVersion>ES5</targetVersion>
+					<candiesJsOut>target/candies</candiesJsOut>
 					<!--<targetVersion>ES6</targetVersion>-->
+					<targetVersion>ES5</targetVersion>
+					<!--<targetVersion>ES3</targetVersion>-->
 					<module>none</module>
 					<moduleResolution>classic</moduleResolution>
+					<bundle>true</bundle>
 				</configuration>
 				<executions>
 					<execution>
@@ -78,6 +95,40 @@
 						<phase>generate-sources</phase>
 						<goals>
 							<goal>jsweet</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>clean</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+
+				</executions>
+			</plugin>
+			 <plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<configuration>
+							<target>
+								<property name="targetBundlePath" value="${project.basedir}/target/${artifactId}-bundle.js"/>
+								<echo message="Generating full bundle to ${targetBundlePath}" />
+								<concat destfile="${targetBundlePath}"
+	                                    force="yes">
+	                                <filelist dir="${project.basedir}/target">
+	                                    <file name="candies/j4ts-${jsweet.j4ts.version}/bundle.js" />
+	                                    <file name="candies/j4ts-${jsweet.j4ts.version}/Manifest.js" />
+	                                    <file name="js/bundle.js" />
+	                                </filelist>
+	                            </concat>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -120,13 +171,16 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+	
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.jsweet</groupId>
 			<artifactId>jsweet-core</artifactId>
 			<!--<version>6</version>-->
 			<!--<version>5-SNAPSHOT</version>-->
-			<version>6-SNAPSHOT</version>
+			<version>6.3.0</version>
+			<!--<version>6-SNAPSHOT</version>-->
 		</dependency>
 		<dependency>
 			<groupId>org.jsweet.candies</groupId>
@@ -138,7 +192,7 @@
 <dependency>
     <groupId>org.jsweet</groupId>
     <artifactId>j4ts</artifactId>
-    <version>0.6.0</version>
+    <version>${jsweet.j4ts.version}</version>
 </dependency>
 
 <!--<dependency>
@@ -152,7 +206,6 @@
     <artifactId>j4ts-awtgeom</artifactId>
     <version>1.8.132-20170726</version>
 </dependency>-->
-
 
 		
 	</dependencies>
