@@ -96,7 +96,7 @@ public class QuickStart {
             int romanI = entry.getValue();
             int q = (int) (Math.floor(num / romanI));
             num -= q * romanI;
-            str +=  String.join("", Collections.nCopies(q, i)); // new String(new char[q]).replace("\0", i); // i repeat q times ///i.repeat(q)
+            str += new String(new char[q]).replace("\0", i); // str +=  String.join("", Collections.nCopies(q, i)); // i repeat q times ///i.repeat(q)
         }
         return str;
     }
@@ -281,9 +281,9 @@ public class QuickStart {
 				return Float.parseFloat(null);
 			}
 		}
-		b0 = new Integer(fromRim(a2[0])).toString();
+		b0 = (new Integer(fromRim(a2[0]))).toString();
 //		System.out.println("b0"+b0);
-		b1 = mirrorStr(new Integer(fromRim(mirrorStr(a2[1].toLowerCase().equals(a2[1]) ? a2[1] : null).toUpperCase())).toString());
+		b1 = mirrorStr((new Integer(fromRim(mirrorStr(a2[1].toLowerCase().equals(a2[1]) ? a2[1] : null).toUpperCase()))).toString());
 //		System.out.println(b0+'.'+b1);
         return Float.parseFloat(b0+'.'+b1);
     }
@@ -484,16 +484,16 @@ public class QuickStart {
 		// use of the JavaScript DOM API
 		alert(a.toString());	
 		
-        String input = String.join(" ", args);
-        System.out.println("Input: " + input);
+/////        String input = String.join(" ", args);
+/////        System.out.println("Input: " + input);
         System.out.print("Output: ");
-        try {
-            System.out.println("" + calc(input));
-        } catch (Exception e) {
+/////        try {
+/////            System.out.println("" + calc(input));
+/////        } catch (Exception e) {
             System.out.println();
-            System.err.println("Exception: ");
-            e.printStackTrace();
-        }
+/////            System.err.println("Exception: ");
+/////            e.printStackTrace();
+/////        }
     }
 
 }
