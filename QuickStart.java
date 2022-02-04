@@ -472,7 +472,7 @@ public class QuickStart {
     }
 
     public static void main(String[] args) {	
-        String input = String.join(" ", args);
+        String input = args[0] + (args.length >= 2 ? args[1] : "") + (args.length >= 3 ? args[2] : "") + (args.length >= 4 ? args[3] : ""); /// String input = String.join(" ", args);
         System.out.println("Input: " + input);
         System.out.print("Output: ");
         try {
