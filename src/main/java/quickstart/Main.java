@@ -1,4 +1,4 @@
-package com.company;
+package main.java.quickstart;
 /**
  * RomeArabCalc
  * @license MIT
