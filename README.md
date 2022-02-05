@@ -26,7 +26,7 @@ $ java -cp . quickstart.Main '92521 ~ TOROMAN'
 $ java -cp . quickstart.Main 'IX/II'
 $ java -cp . quickstart.Main 'IX%II'
 $ java -cp . quickstart.Main 'II / III'
-$ java -cp . quickstart.Main 'II.iii * VII.iivx' # 2.3 * 7.72
+$ java -cp . quickstart.Main 'II.iii * VII.iivx' # 2.3 * 7.71
 $ java -cp . quickstart.Main 'I.ii + VI.x' # 1.2 + 6.01
 $ java -cp . quickstart.Main '5.2 + 4.8'
 $ java -cp . quickstart.Main '5 - 8'
