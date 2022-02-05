@@ -207,9 +207,10 @@ public class QuickStart {
 
     static String[] splitByFirstOperation (String expression) { // например "5+6"
         String orPattern = "["+Pattern.quote(tilde)+Pattern.quote(addition)+Pattern.quote(subtraction)+Pattern.quote(exponentiation)+Pattern.quote(multiplication)+Pattern.quote(division)+Pattern.quote(remainding)+Pattern.quote(logarithm)+"]";
-        expression = expression.trim().replaceAll(orPattern, " $0 "); // surround operation with spaces
+        expression = expression.trim().replaceAll("("+orPattern+")", " $1 "); // surround operation with spaces
 
-        String[] result = expression.split(" +"); // разбиваем по operation: + - * /
+		Pattern p = Pattern.compile("[ ]+");  
+        String[] result = expression.split("\\s+");/*p.split(expression);*/ // разбиваем по operation: + - * /
         if (result == null || result.length != 3) { // по условию допустима только одна операция для двух чисел
             return null;
         } else {
