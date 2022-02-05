@@ -30,7 +30,7 @@ public class Main {
         final static String logarithm = "b"; // логарифм левого числа по основанию (справа)
     }
 
-    static final int floatQuality = 3; // число знаков после запятой для float
+    static final int floatQuality = 5; // число знаков после запятой для float
     static final float accuracy = fastPow(10, -floatQuality);
     static final float accuracyMulter = fastPow(10, floatQuality);
     static boolean isArab;
