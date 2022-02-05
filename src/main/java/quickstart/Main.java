@@ -297,7 +297,12 @@ public class Main {
 		String result = "";
 		///System.out.println("sourceStr:"+sourceStr);
 		for (int i=0; i<sourceStr.length(); ++i) {
-			result += ""+sourceStr.charAt(sourceStr.length() - 1 - i);
+            if (i<sourceStr.length()-1 && sourceStr.charAt(sourceStr.length() - 1 - i) == "M̅".charAt(1)) {
+			    result += ""+sourceStr.charAt(sourceStr.length() - 2 - i)+sourceStr.charAt(sourceStr.length() - 1 - i);
+                ++i;
+            } else {
+			    result += ""+sourceStr.charAt(sourceStr.length() - 1 - i);
+            }
 		}
 		return result;
 	}
