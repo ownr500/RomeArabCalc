@@ -23,6 +23,7 @@ $ java -cp . quickstart.Main '347 ~ TOARAB'
 $ java -cp . quickstart.Main '19 ~ TOROMAN'
 $ java -cp . quickstart.Main 'XIX ~ TOROMAN'
 $ java -cp . quickstart.Main '92521 ~ TOROMAN'
+$ java -cp . quickstart.Main 103993.0 / 33102
 $ java -cp . quickstart.Main '3.1 ~ TOROMAN'
 $ java -cp . quickstart.Main '3.14 ~ TOROMAN'
 $ java -cp . quickstart.Main '3.141 ~ TOROMAN'
