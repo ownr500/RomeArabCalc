@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.*;
 import java.util.regex.Pattern;
 
-public class QuickStart {
+public class Main {
 
         final static String tilde = "~"; // вызов функции (справа)
         final static String addition = "+"; // сложение
@@ -210,7 +210,7 @@ public class QuickStart {
         expression = expression.trim().replaceAll("("+orPattern+")", " $1 "); // surround operation with spaces
 
 		Pattern p = Pattern.compile("[ ]+");  
-        String[] result = expression.split("\\s+");/*p.split(expression);*/ // разбиваем по operation: + - * /
+        String[] result = p.split(expression); // разбиваем по operation: + - * /
         if (result == null || result.length != 3) { // по условию допустима только одна операция для двух чисел
             return null;
         } else {
@@ -473,7 +473,7 @@ public class QuickStart {
     }
 
     public static void main(String[] args) {	
-        String input = args[0] + (args.length >= 2 ? args[1] : "") + (args.length >= 3 ? args[2] : "") + (args.length >= 4 ? args[3] : ""); /// String input = String.join(" ", args);
+        String input = String.join(" ", args);
         System.out.println("Input: " + input);
         System.out.print("Output: ");
         try {
