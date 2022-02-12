@@ -271,7 +271,7 @@ var quickstart;
             return result;
         }
         static fromRimFloat(a) {
-            let a2 = a.split("\\.");
+            let a2 = a.split(".");
             let b0 = null;
             let b1 = null;
             if (a2.length !== 2) {
