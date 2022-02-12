@@ -294,7 +294,11 @@ var quickstart;
         static mirrorStr(sourceStr) {
             let result = "";
             for (let i = 0; i < sourceStr.length; ++i) {
-                {
+                if (i < sourceStr.length - 1 && (c => c.charCodeAt == null ? c : c.charCodeAt(0))(sourceStr.charAt(sourceStr.length - 1 - i)) == (c => c.charCodeAt == null ? c : c.charCodeAt(0))("M\u0305".charAt(1))) {
+                    result += "" + sourceStr.charAt(sourceStr.length - 2 - i) + sourceStr.charAt(sourceStr.length - 1 - i);
+                    ++i;
+                }
+                else {
                     result += "" + sourceStr.charAt(sourceStr.length - 1 - i);
                 }
                 ;
@@ -532,7 +536,8 @@ var quickstart;
     Main.division = "/";
     Main.remainding = "%";
     Main.logarithm = "b";
-    Main.floatQuality = 3;
+    
+    Main.floatQuality = 5;
     Main.allowMoreForce = false;
     quickstart.Main = Main;
     Main["__class"] = "quickstart.Main";
