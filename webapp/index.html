@@ -25,8 +25,10 @@
     <hr />
     <label>x:</label><input id="x" type="text" value="VII" /><select id="operator">
         <option selected>+</option>
-<!--        <option>-</option>-->
+        <option>-</option>
         <option>*</option>
+        <option>/</option>
+        <option>%</option>
         <option>b</option>
         <option>^</option>
     </select><label>y:</label><input id="y" type="text" value="III" /><input type="button" value="= ?" onclick="$('#r').val(quickstart.Main.calc(''+$('#x').val()+''+$('#operator').val()+''+$('#y').val()));" /><input id="r" type="text" value="" disabled />

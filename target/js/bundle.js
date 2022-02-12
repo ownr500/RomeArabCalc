@@ -204,7 +204,10 @@ var quickstart;
             return Math.fround((Math.log(x) / Math.log(y)));
         }
         static splitByFirstOperation(expression) {
-            let orPattern = "[" + java.util.regex.Pattern.quote(Main.tilde) + java.util.regex.Pattern.quote(Main.addition) + java.util.regex.Pattern.quote(Main.subtraction) + java.util.regex.Pattern.quote(Main.exponentiation) + java.util.regex.Pattern.quote(Main.multiplication) + java.util.regex.Pattern.quote(Main.division) + java.util.regex.Pattern.quote(Main.remainding) + java.util.regex.Pattern.quote(Main.logarithm) + "]";
+            if (expression.indexOf(Main.subtraction) >= 0) {
+                expression = expression.replace(/\-/g, " - ");
+            }
+            let orPattern = "[" + java.util.regex.Pattern.quote(Main.tilde) + java.util.regex.Pattern.quote(Main.addition) + java.util.regex.Pattern.quote(Main.exponentiation) + java.util.regex.Pattern.quote(Main.multiplication) + java.util.regex.Pattern.quote(Main.division) + java.util.regex.Pattern.quote(Main.remainding) + java.util.regex.Pattern.quote(Main.logarithm) + "]";
             expression = /* replaceAll */ expression.trim().replace(new RegExp("(" + orPattern + ")", 'g'), " $1 ");
             let p = java.util.regex.Pattern.compile("[ ]+");
             let result = expression.split(/[ ]+/g);///p.split(expression);
