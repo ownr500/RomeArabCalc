@@ -14,16 +14,54 @@ var quickstart;
         ;
         static isArab_$LI$() { Main.__static_initialize(); return Main.isArab; }
         ;
-        static romanSourceMap_$LI$() { Main.__static_initialize(); if (Main.romanSourceMap == null)
-            Main.romanSourceMap = new Main.Main$0(); return Main.romanSourceMap; }
+        static romanSourceMap_$LI$() { Main.__static_initialize(); return Main.romanSourceMap; }
         ;
-        static rimToIntMap_$LI$() { Main.__static_initialize(); if (Main.rimToIntMap == null)
-            Main.rimToIntMap = new Main.Main$1(); return Main.rimToIntMap; }
+        static rimToIntMap_$LI$() { Main.__static_initialize(); return Main.rimToIntMap; }
         ;
-        static intToRimMap_$LI$() { Main.__static_initialize(); if (Main.intToRimMap == null)
-            Main.intToRimMap = (new java.util.HashMap()); return Main.intToRimMap; }
+        static intToRimMap_$LI$() { Main.__static_initialize(); return Main.intToRimMap; }
         ;
         static __static_initializer_0() {
+            Main.romanSourceMap = (new java.util.LinkedHashMap());
+            Main.romanSourceMap_$LI$().put("M\u0305", 1000000);
+            Main.romanSourceMap_$LI$().put("C\u0305M\u0305", 900000);
+            Main.romanSourceMap_$LI$().put("D\u0305", 500000);
+            Main.romanSourceMap_$LI$().put("C\u0305D\u0305", 400000);
+            Main.romanSourceMap_$LI$().put("C\u0305", 100000);
+            Main.romanSourceMap_$LI$().put("X\u0305C\u0305", 90000);
+            Main.romanSourceMap_$LI$().put("L\u0305", 50000);
+            Main.romanSourceMap_$LI$().put("X\u0305L\u0305", 40000);
+            Main.romanSourceMap_$LI$().put("X\u0305", 10000);
+            Main.romanSourceMap_$LI$().put("I\u0305X\u0305", 9000);
+            Main.romanSourceMap_$LI$().put("V\u0305", 5000);
+            Main.romanSourceMap_$LI$().put("I\u0305V\u0305", 4000);
+            Main.romanSourceMap_$LI$().put("M", 1000);
+            Main.romanSourceMap_$LI$().put("CM", 900);
+            Main.romanSourceMap_$LI$().put("D", 500);
+            Main.romanSourceMap_$LI$().put("CD", 400);
+            Main.romanSourceMap_$LI$().put("C", 100);
+            Main.romanSourceMap_$LI$().put("XC", 90);
+            Main.romanSourceMap_$LI$().put("L", 50);
+            Main.romanSourceMap_$LI$().put("XL", 40);
+            Main.romanSourceMap_$LI$().put("X", 10);
+            Main.romanSourceMap_$LI$().put("IX", 9);
+            Main.romanSourceMap_$LI$().put("V", 5);
+            Main.romanSourceMap_$LI$().put("IV", 4);
+            Main.romanSourceMap_$LI$().put("I", 1);
+            Main.rimToIntMap = (new java.util.HashMap());
+            Main.rimToIntMap_$LI$().put("N", 0);
+            for (let x = 1; x <= 10000; ++x) {
+                {
+                    Main.rimToIntMap_$LI$().put(Main._convertToRoman(x), x);
+                }
+                ;
+            }
+            for (let y = 1; y <= 1000; ++y) {
+                {
+                    Main.rimToIntMap_$LI$().put(Main._convertToRoman(y * 1000), y * 1000);
+                }
+                ;
+            }
+            Main.intToRimMap = (new java.util.HashMap());
             for (let index121 = Main.rimToIntMap_$LI$().keySet().iterator(); index121.hasNext();) {
                 let key = index121.next();
                 {
@@ -40,8 +78,7 @@ var quickstart;
                     let romanI = entry.getValue();
                     let q = ((Math.floor((num / romanI | 0))) | 0);
                     num -= q * romanI;
-                    str += /* replace */ new String((s => { let a = []; while (s-- > 0)
-                        a.push(null); return a; })(q)).split("\u0000").join(i);
+                    str += i.repeat(q);
                 }
             }
             return str;
@@ -170,7 +207,7 @@ var quickstart;
             let orPattern = "[" + java.util.regex.Pattern.quote(Main.tilde) + java.util.regex.Pattern.quote(Main.addition) + java.util.regex.Pattern.quote(Main.subtraction) + java.util.regex.Pattern.quote(Main.exponentiation) + java.util.regex.Pattern.quote(Main.multiplication) + java.util.regex.Pattern.quote(Main.division) + java.util.regex.Pattern.quote(Main.remainding) + java.util.regex.Pattern.quote(Main.logarithm) + "]";
             expression = /* replaceAll */ expression.trim().replace(new RegExp("(" + orPattern + ")", 'g'), " $1 ");
             let p = java.util.regex.Pattern.compile("[ ]+");
-            let result = p.split(expression);
+            let result = expression.split(/[ ]+/g);///p.split(expression);
             if (result == null || result.length !== 3) {
                 return null;
             }
@@ -472,7 +509,7 @@ var quickstart;
             return zStr.toString();
         }
         static main(args) {
-            let input = "X-II";
+            let input = "X - II";
             console.info("Input: " + input);
             console.info("Output: ");
             try {
@@ -585,4 +622,4 @@ quickstart.Main.accuracyMulter_$LI$();
 quickstart.Main.accuracy_$LI$();
 quickstart.Main.__static_initialize();
 quickstart.Main.main(null);
-quickstart.QuickStart.main(null);
+
