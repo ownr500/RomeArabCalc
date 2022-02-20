@@ -30,10 +30,10 @@ public class Main {
         final static String logarithm = "b"; // логарифм левого числа по основанию (справа)
     }
 
-    static final int floatQuality = 5; // число знаков после запятой для float
-    static final float accuracy = fastPow(10, -floatQuality);
-    static final float accuracyMulter = fastPow(10, floatQuality);
-    static boolean isArab;
+    final int floatQuality = 5; // число знаков после запятой для float
+    final float accuracy = fastPow(10, -floatQuality);
+    final float accuracyMulter = fastPow(10, floatQuality);
+    boolean isArab;
 
     static final boolean allowMoreForce = false; ///
 
@@ -152,7 +152,7 @@ public class Main {
 					num += h;
 					lastWasPlus = true;
 				} else {
-					if ((lastWasPlus || allowMoreForce) && 10*h >= maxH && h == Math.round(fastPow(10, (int)logY(h, 10)))) {
+					if ((lastWasPlus || allowMoreForce) && 10*h >= maxH && h == Math.round(Math.pow(10, (int)logY(h, 10)))) {
 						num -= h;
 					} else {
 						num = null;
@@ -173,7 +173,7 @@ public class Main {
         return num;
     }
 
-    static float fastPow (float number, int power) {
+    float fastPow (float number, int power) {
         if (power == 0) {
             return 1.0f;
         } else if (power == 1) {
@@ -187,7 +187,7 @@ public class Main {
         }
     }
     
-    static float fastPow (float number, float power) {
+    float fastPow (float number, float power) {
 		Integer powerN = _partialRound (power);
 		if (powerN != null) {
 			return fastPow(number, (int)powerN);
@@ -196,7 +196,7 @@ public class Main {
 		}
 	}
 	
-	static Integer _partialRound (float number) {
+	Integer _partialRound (float number) {
 		float r = accuracyMulter*(number-accuracy) - accuracyMulter*(number);
 		if (r >= -0.1 && r <= 0.1) {
 			return (int)number;
@@ -209,7 +209,7 @@ public class Main {
         return (float) (Math.log(x) / Math.log(y));
     }
 
-    static String[] splitByFirstOperation (String expression) { // например "5+6"
+    String[] splitByFirstOperation (String expression) { // например "5+6"
         String orPattern = "["+Pattern.quote(tilde)+Pattern.quote(addition)+Pattern.quote(subtraction)+Pattern.quote(exponentiation)+Pattern.quote(multiplication)+Pattern.quote(division)+Pattern.quote(remainding)+Pattern.quote(logarithm)+"]";
         expression = expression.trim().replaceAll("("+orPattern+")", " $1 "); // surround operation with spaces
 
@@ -222,7 +222,7 @@ public class Main {
         }
     }
 
-	static String toRimFloat(float x) { // may be negative too
+	String toRimFloat(float x) { // may be negative too
 //		System.out.println("ZZZ:"+x);
 		int d = (int)fastPow(10, floatQuality);
 		int mult = (x >= 0) ? (1) : (-1);
@@ -245,7 +245,7 @@ public class Main {
 		}
     }
 
-    static String toRim(int x) { // only 0 and positive integers
+    String toRim(int x) { // only 0 and positive integers
 		String result = intToRimMap.get(x);
 		if (result == null) {
 			result = _convertToRoman(x);
@@ -253,7 +253,7 @@ public class Main {
         return result;
     }
 
-    static int fromRim(String a) {
+    int fromRim(String a) {
 		if (!a.toUpperCase().equals(a)) {
 			return 2/0;
 		}
@@ -275,7 +275,7 @@ public class Main {
 		return result;
     }
 
-	static float fromRimFloat(String a) {
+	float fromRimFloat(String a) {
 		String[] a2 = a.split("\\.");
 		String b0 = null;
 		String b1 = null;
@@ -293,7 +293,7 @@ public class Main {
         return Float.parseFloat(b0+'.'+b1);
     }
 
-    static String mirrorStr (String sourceStr) {
+    String mirrorStr (String sourceStr) {
 		String result = "";
 		///System.out.println("sourceStr:"+sourceStr);
 		for (int i=0; i<sourceStr.length(); ++i) {
@@ -307,20 +307,20 @@ public class Main {
 		return result;
 	}
 
-    static String toArab(int x) {
+    String toArab(int x) {
         return Integer.toString(x);
     }
 
-    static String toArabFloat(float x) {
+    String toArabFloat(float x) {
         return Float.toString(x);
     }
 
-    static int fromArab(String a) {
+    int fromArab(String a) {
         int x = Integer.parseInt(a);
         return x;
     }
 
-    static float fromArabFloat(String a) {
+    float fromArabFloat(String a) {
         float x = Float.parseFloat(a);
         return x;
     }
@@ -335,7 +335,7 @@ public class Main {
 		}
 	}
     
-    static String _zStr(float z) {
+    String _zStr(float z) {
 		String zStr;
 		try {
 			if (isArab) {
@@ -351,7 +351,7 @@ public class Main {
 		return zStr;
 	}
 
-    public static String calc(String input) {
+    public String calc(String input) {
 		String zStr = null;
         input = input.replaceAll("ь", "b"); // кириллица (исправление опечатки)
         input = input.replaceAll("Ь", "b"); // кириллица (исправление опечатки)
@@ -486,7 +486,7 @@ public class Main {
         System.out.println("Input: " + input);
         System.out.print("Output: ");
         try {
-            System.out.println("" + calc(input));
+            System.out.println("" + new Main().calc(input));
         } catch (Exception e) {
             System.out.println();
             System.err.println("Exception: ");
