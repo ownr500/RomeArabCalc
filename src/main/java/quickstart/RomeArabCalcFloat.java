@@ -12,24 +12,16 @@ import java.util.regex.Pattern;
 
 import static quickstart.RomeArabCalc.Operations.*;
 
-public class RomeArabCalc {
+public class RomeArabCalcFloat {
 
-    class Operations {
-        final static String tilde = "~"; // вызов функции (справа)
-        final static String addition = "+"; // сложение
-        final static String subtraction = "-"; // вычитание
-        final static String exponentiation = "^"; // возведение левого числа в степень (справа)
-        final static String multiplication = "*"; // умножение
-        final static String division = "/"; // целочисленное деление
-        final static String remainding = "%"; // остаток от деления
-        final static String logarithm = "b"; // логарифм левого числа по основанию (справа)
-    }
+    final int floatQuality = 5; // число знаков после запятой для float
+    final float accuracy = fastPow(10, -floatQuality);
+    final float accuracyMulter = fastPow(10, floatQuality);
+    boolean isArab;
 
-    private boolean isArab;
+    static final boolean allowMoreForce = false; ///
 
-    protected static final boolean allowMoreForce = false; ///
-
-    protected static final Map<String, Integer> romanSourceMap = new LinkedHashMap<String, Integer>() {{ // source (adding order is important here, so using LinkedHashMap)
+    static final Map<String, Integer> romanSourceMap = new LinkedHashMap<String, Integer>() {{ // source (adding order is important here, so using LinkedHashMap)
         put("M̅", 1000000);
         put("C̅M̅", 900000);
         put("D̅",  500000);
@@ -57,7 +49,7 @@ public class RomeArabCalc {
         put("I", 1);
     }};
 
-    protected static Map<String, Integer> rimToIntMap = new HashMap<String, Integer>() {{ // used
+    static Map<String, Integer> rimToIntMap = new HashMap<String, Integer>() {{ // used
         put("N",0);
 //        put("I",1);
 //        put("II",2);
@@ -78,14 +70,14 @@ public class RomeArabCalc {
         }
     }};
 
-    protected static HashMap<Integer, String> intToRimMap = new HashMap<Integer, String>(); // used
+    static HashMap<Integer, String> intToRimMap = new HashMap<Integer, String>(); // used
     static {
         for (String key : rimToIntMap.keySet()) {
             intToRimMap.put(rimToIntMap.get(key), key);
         }
     }
 
-    private static String _convertToRoman(int num) {
+    static String _convertToRoman(int num) {
         String str = "";
         for (Map.Entry<String, Integer> entry : romanSourceMap.entrySet()) {
             String i = entry.getKey();
@@ -97,7 +89,7 @@ public class RomeArabCalc {
         return str;
     }
 
-	private static Integer _convertFromRoman(String romanNumStr) {
+	static Integer _convertFromRoman(String romanNumStr) {
         Integer num = 0;
         String[] romanNumStrSymbols = new String[romanNumStr.length()+1]; //romanNumStr.toCharArray(); ///romanNumStr.split("(?!^)");
         int j = 0;
@@ -165,7 +157,7 @@ public class RomeArabCalc {
         return num;
     }
 
-    public float fastPow (float number, int power) {
+    float fastPow (float number, int power) {
         if (power == 0) {
             return 1.0f;
         } else if (power == 1) {
@@ -178,12 +170,30 @@ public class RomeArabCalc {
             return fastPow(number * number, power / 2);
         }
     }
+    
+    float fastPow (float number, float power) {
+		Integer powerN = _partialRound (power);
+		if (powerN != null) {
+			return fastPow(number, (int)powerN);
+		} else {
+			return (float)Math.pow(number, power);
+		}
+	}
+	
+	Integer _partialRound (float number) {
+		float r = accuracyMulter*(number-accuracy) - accuracyMulter*(number);
+		if (r >= -0.1 && r <= 0.1) {
+			return (int)number;
+		} else {
+			return null;
+		}
+	}
 
-    public static float logY(float x, float y) {
+    static float logY(float x, float y) {
         return (float) (Math.log(x) / Math.log(y));
     }
 
-    protected String[] splitByFirstOperation (String expression) { // например "5+6"
+    String[] splitByFirstOperation (String expression) { // например "5+6"
         String orPattern = "["+Pattern.quote(tilde)+Pattern.quote(addition)+Pattern.quote(subtraction)+Pattern.quote(exponentiation)+Pattern.quote(multiplication)+Pattern.quote(division)+Pattern.quote(remainding)+Pattern.quote(logarithm)+"]";
         expression = expression.trim().replaceAll("("+orPattern+")", " $1 "); // surround operation with spaces
 
@@ -196,22 +206,40 @@ public class RomeArabCalc {
         }
     }
 
+	String toRimFloat(float x) { // may be negative too
+//		System.out.println("ZZZ:"+x);
+		int d = (int)fastPow(10, floatQuality);
+		int mult = (x >= 0) ? (1) : (-1);
+		x = x * mult; // abs
+
+		x *= d;
+		int a = (int)(x / d);
+		int b = (int)(x % d);
+
+//		System.out.println("a,b:"+a+"."+b);
+
+		String b0 = toRim(a).toString();
+		String b1 = mirrorStr(toRim(Integer.parseInt(mirrorStr(""+b))).toLowerCase());
+		String pref = (mult > 0) ? ("") : ("-");
+//		System.out.println("b:"+b0+"."+b1);
+		if (b1.equals("n")) {
+			return pref+b0;
+		} else {
+			return pref+b0+"."+b1;
+		}
+    }
+
     String toRim(int x) { // only 0 and positive integers
-        int multer = 1;
-        if (x < 0) {
-            x = -x;
-            multer = -1;
-        }
 		String result = intToRimMap.get(x);
 		if (result == null) {
 			result = _convertToRoman(x);
 		}
-        return ((multer < 0) ? "-" : "") + result;
+        return result;
     }
 
     int fromRim(String a) {
 		if (!a.toUpperCase().equals(a)) {
-			return 2 / 0;
+			return 2/0;
 		}
         a = a.replaceAll("М", "M"); // кириллица (исправление опечатки)
         a = a.replaceAll("Л", "L"); // кириллица (исправление опечатки)
@@ -231,7 +259,25 @@ public class RomeArabCalc {
 		return result;
     }
 
-    protected String mirrorStr (String sourceStr) {
+	float fromRimFloat(String a) {
+		String[] a2 = a.split("\\.");
+		String b0 = null;
+		String b1 = null;
+		if (a2.length != 2) {
+			if (a2.length == 1) {
+				return (float)fromRim(a);
+			} else {
+				return Float.parseFloat(null);
+			}
+		}
+		b0 = (new Integer(fromRim(a2[0]))).toString();
+//		System.out.println("b0"+b0);
+		b1 = mirrorStr((new Integer(fromRim(mirrorStr(a2[1].toLowerCase().equals(a2[1]) ? a2[1] : null).toUpperCase()))).toString());
+//		System.out.println(b0+'.'+b1);
+        return Float.parseFloat(b0+'.'+b1);
+    }
+
+    String mirrorStr (String sourceStr) {
 		String result = "";
 		///System.out.println("sourceStr:"+sourceStr);
 		for (int i=0; i<sourceStr.length(); ++i) {
@@ -245,16 +291,25 @@ public class RomeArabCalc {
 		return result;
 	}
 
-    protected String toArab(int x) {
+    String toArab(int x) {
         return Integer.toString(x);
     }
 
-    protected int fromArab(String a) {
+    String toArabFloat(float x) {
+        return Float.toString(x);
+    }
+
+    int fromArab(String a) {
         int x = Integer.parseInt(a);
         return x;
     }
+
+    float fromArabFloat(String a) {
+        float x = Float.parseFloat(a);
+        return x;
+    }
     
-    public static Integer factorial(int n) {
+    static Integer factorial(int n) {
 		if (n < 0) {
 			return null;
 		} else if (n == 0 || n == 1) {
@@ -264,13 +319,13 @@ public class RomeArabCalc {
 		}
 	}
     
-    protected String _zStr(int z) {
+    String _zStr(float z) {
 		String zStr;
 		try {
 			if (isArab) {
-				zStr = toArab(z); ///
+				zStr = toArabFloat(z); ///
 			} else {
-				zStr = toRim(z); ///
+				zStr = toRimFloat(z); ///
 			}
 		} catch (Exception e3) {
 			e3.printStackTrace();
@@ -290,25 +345,30 @@ public class RomeArabCalc {
         String b = lr[1];
         final String operation = lr[2];
 
-        int x = 0;
-        int y = 0;
+        float x = 0;
+        float y = 0;
         String tildeCall = null;
 
         isArab = true;
         try {
 			try {
-				x = fromArab(a);
+				x = fromArabFloat(a);
 			} catch (Exception e) {
-				x = fromRim(a);
+				x = fromRimFloat(a);
 				isArab = false;
 			}
 			if (operation.equals("~")) {
 				tildeCall = b;
 			} else {
 			if (isArab) {
-				y = fromArab(b);
+				y = fromArabFloat(b);
 			} else {
-				y = fromRim(b);
+				y = fromRimFloat(b);
+				if (new Integer(0).equals(_partialRound(y))) {
+					y = 0.0f;
+				} else if (new Integer(1).equals(_partialRound(y))) {
+					y = 1.0f;
+				}
 			}
 			}
 		} catch (Exception e1) {
@@ -324,10 +384,10 @@ public class RomeArabCalc {
 			System.err.println("ERROR: unsupported input, negative or too big numbers");
 			zStr = null;
         } else {
-            Integer z = null;
+            Float z = null;
             try {
-				if ((operation.equals(division) || operation.equals(remainding)) && (y == 0)) {
-					z = 1 / 0;
+				if ((operation.equals(division) || operation.equals(remainding)) && (y == 0.0f || y == -0.0f)) {
+					z = (float)(1 / 0);
 				} else {
 					switch (operation) {
 						case tilde:
@@ -341,13 +401,13 @@ public class RomeArabCalc {
 									zStr = _zStr(z);
 									break;
 								case "FACTORIAL":
-									z = factorial(x); ///
+									z = (float)factorial((int)x); ///
 									zStr = _zStr(z);
 									break;
 								case "TOARAB":
 									if (!isArab) {
-										z = fromRim(a);
-										zStr = toArab(z);
+										z = fromRimFloat(a);
+										zStr = toArabFloat(z);
 									} else {
 										zStr = a;
 									}
@@ -356,8 +416,8 @@ public class RomeArabCalc {
 									if (!isArab) {
 										zStr = a;
 									} else {
-										z = fromArab(a);
-										zStr = toRim(z);
+										z = fromArabFloat(a);
+										zStr = toRimFloat(z);
 									}
 									break;
 								case "TORIM":
@@ -374,22 +434,22 @@ public class RomeArabCalc {
 							z = x - y;
 							break;
 						case exponentiation:
-							z = (int)fastPow(x, y);
+							z = fastPow(x, y);
 							break;
 						case multiplication:
 							z = x * y;
 							break;
 						case division:
-							z = (int)(x / y);
+							z = x / y;
 							break;
 						case remainding:
 							z = x % y;
 							break;
 						case logarithm:
-							z = (int)logY(x, y);
+							z = logY(x, y);
 							break;
 						default:
-							z = 1 / 0; // exception for unsupported operation
+							z = (float)(1 / 0); // exception for unsupported operation
 					}
             }
 			} catch (Exception e2) {
