@@ -4,20 +4,15 @@ package quickstart;
  * @license MIT
  */
 
-/////import static def.dom.Globals.alert;
-/////import static def.jquery.Globals.$;
-
 import java.util.ArrayList;
 import java.util.List;
-
-/////import def.js.Array;
 
 import java.util.*;
 import java.util.regex.Pattern;
 
-import static quickstart.Main.Operations.*;
+import static quickstart.RomeArabCalc.Operations.*;
 
-public class Main {
+public class RomeArabCalc {
 
     class Operations {
         final static String tilde = "~"; // вызов функции (справа)
@@ -486,7 +481,7 @@ public class Main {
         System.out.println("Input: " + input);
         System.out.print("Output: ");
         try {
-            System.out.println("" + new Main().calc(input));
+            System.out.println("" + new RomeArabCalc().calc(input));
         } catch (Exception e) {
             System.out.println();
             System.err.println("Exception: ");
