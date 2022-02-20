@@ -45,7 +45,8 @@ public class RomeArabCalcFloat extends RomeArabCalc {
         return super.splitByFirstOperation(expression);
     }
 
-	protected String toRim(float x) { // may be negative too
+	protected String toRim (Number x_) { // may be negative too
+        float x = (Float)x_;
 //		System.out.println("ZZZ:"+x);
 		int d = (int)fastPow(10, floatQuality);
 		int mult = (x >= 0) ? (1) : (-1);
@@ -68,7 +69,7 @@ public class RomeArabCalcFloat extends RomeArabCalc {
 		}
     }
 
-	protected Number fromRim(String a) {
+	protected Number fromRim (String a) {
 		String[] a2 = a.split("\\.");
 		String b0 = null;
 		String b1 = null;
@@ -86,7 +87,8 @@ public class RomeArabCalcFloat extends RomeArabCalc {
         return Float.parseFloat(b0+'.'+b1);
     }
 
-    protected String toArab(float x) {
+    protected String toArab (Number x_) {
+        float x = (Float)x_;
         String result = Float.toString(x);
         String[] a = result.split("\\.");
         if (a.length == 2 && Integer.parseInt(a[1]) == 0) {
@@ -95,28 +97,12 @@ public class RomeArabCalcFloat extends RomeArabCalc {
         return result;
     }
 
-    protected Number fromArab(String a) {
+    protected Number fromArab (String a) {
         Float x = Float.parseFloat(a);
         return x;
     }
     
-    protected String _zStr(float z) {
-		String zStr;
-		try {
-			if (isArab) {
-				zStr = toArab(z); ///
-			} else {
-				zStr = toRim(z); ///
-			}
-		} catch (Exception e3) {
-			e3.printStackTrace();
-			System.err.println("ERROR: result overflow or convertion error (float)");
-			zStr = null;
-		}
-		return zStr;
-	}
-
-    public String calc(String input) {
+    public String calc (String input) {
 		String zStr = null;
         input = input.replaceAll("ь", "b"); // кириллица (исправление опечатки)
         input = input.replaceAll("Ь", "b"); // кириллица (исправление опечатки)
@@ -175,15 +161,15 @@ public class RomeArabCalcFloat extends RomeArabCalc {
 							switch (tildeCall) {
 								case "ABS":
 									z = (x >= 0) ? (x) : (-x);
-									zStr = _zStr(z);
+									zStr = _zStr(z, isArab);
 									break;
 								case "MINUS":
 									z = -x;
-									zStr = _zStr(z);
+									zStr = _zStr(z, isArab);
 									break;
 								case "FACTORIAL":
 									z = (float)factorial((int)x); ///
-									zStr = _zStr(z);
+									zStr = _zStr(z, isArab);
 									break;
 								case "TOARAB":
 									if (!isArab) {
@@ -238,7 +224,7 @@ public class RomeArabCalcFloat extends RomeArabCalc {
 				z = null;
 			}
 			if (z != null) {
-				zStr = _zStr(z);
+				zStr = _zStr(z, isArab);
 			} else {
 				zStr = null;
 			}

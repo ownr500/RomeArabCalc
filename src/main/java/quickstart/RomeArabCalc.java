@@ -196,7 +196,8 @@ public class RomeArabCalc {
         }
     }
 
-    protected String toRim(int x) { // only 0 and positive integers
+    protected String toRim (Number x_) { // only 0 and positive integers
+        int x = (Integer)x_;
         int multer = 1;
         if (x < 0) {
             x = -x;
@@ -209,7 +210,7 @@ public class RomeArabCalc {
         return ((multer < 0) ? "-" : "") + result;
     }
 
-    protected Number fromRim(String a) {
+    protected Number fromRim (String a) {
 		if (!a.toUpperCase().equals(a)) {
 			return new Integer(2 / 0);
 		}
@@ -245,16 +246,16 @@ public class RomeArabCalc {
 		return result;
 	}
 
-    protected String toArab(int x) {
-        return Integer.toString(x);
+    protected String toArab (Number x) {
+        return Integer.toString((Integer)x);
     }
 
-    protected Number fromArab(String a) {
+    protected Number fromArab (String a) {
         Integer x = Integer.parseInt(a);
         return x;
     }
     
-    public static Integer factorial(int n) {
+    public static Integer factorial (int n) {
 		if (n < 0) {
 			return null;
 		} else if (n == 0 || n == 1) {
@@ -264,7 +265,7 @@ public class RomeArabCalc {
 		}
 	}
     
-    protected String _zStr(int z) {
+    protected String _zStr (Number z, boolean isArab) {
 		String zStr;
 		try {
 			if (isArab) {
@@ -280,7 +281,7 @@ public class RomeArabCalc {
 		return zStr;
 	}
 
-    public String calc(String input) {
+    public String calc (String input) {
 		String zStr = null;
         input = input.replaceAll("ь", "b"); // кириллица (исправление опечатки)
         input = input.replaceAll("Ь", "b"); // кириллица (исправление опечатки)
@@ -334,15 +335,15 @@ public class RomeArabCalc {
 							switch (tildeCall) {
 								case "ABS":
 									z = (x >= 0) ? (x) : (-x);
-									zStr = _zStr(z);
+									zStr = _zStr(z, isArab);
 									break;
 								case "MINUS":
 									z = -x;
-									zStr = _zStr(z);
+									zStr = _zStr(z, isArab);
 									break;
 								case "FACTORIAL":
 									z = factorial(x); ///
-									zStr = _zStr(z);
+									zStr = _zStr(z, isArab);
 									break;
 								case "TOARAB":
 									if (!isArab) {
@@ -397,7 +398,7 @@ public class RomeArabCalc {
 				z = null;
 			}
 			if (z != null) {
-				zStr = _zStr(z);
+				zStr = _zStr(z, isArab);
 			} else {
 				zStr = null;
 			}
