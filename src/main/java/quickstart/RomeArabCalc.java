@@ -196,7 +196,7 @@ public class RomeArabCalc {
         }
     }
 
-    String toRim(int x) { // only 0 and positive integers
+    protected String toRim(int x) { // only 0 and positive integers
         int multer = 1;
         if (x < 0) {
             x = -x;
@@ -209,9 +209,9 @@ public class RomeArabCalc {
         return ((multer < 0) ? "-" : "") + result;
     }
 
-    int fromRim(String a) {
+    protected Number fromRim(String a) {
 		if (!a.toUpperCase().equals(a)) {
-			return 2 / 0;
+			return new Integer(2 / 0);
 		}
         a = a.replaceAll("М", "M"); // кириллица (исправление опечатки)
         a = a.replaceAll("Л", "L"); // кириллица (исправление опечатки)
@@ -228,10 +228,10 @@ public class RomeArabCalc {
         if (result == null) {
 			result = _convertFromRoman(a);
 		}
-		return result;
+		return new Integer(result);
     }
 
-    protected String mirrorStr (String sourceStr) {
+    public String mirrorStr (String sourceStr) {
 		String result = "";
 		///System.out.println("sourceStr:"+sourceStr);
 		for (int i=0; i<sourceStr.length(); ++i) {
@@ -249,8 +249,8 @@ public class RomeArabCalc {
         return Integer.toString(x);
     }
 
-    protected int fromArab(String a) {
-        int x = Integer.parseInt(a);
+    protected Number fromArab(String a) {
+        Integer x = Integer.parseInt(a);
         return x;
     }
     
@@ -297,18 +297,18 @@ public class RomeArabCalc {
         isArab = true;
         try {
 			try {
-				x = fromArab(a);
+				x = (int)fromArab(a);
 			} catch (Exception e) {
-				x = fromRim(a);
+				x = (int)fromRim(a);
 				isArab = false;
 			}
 			if (operation.equals("~")) {
 				tildeCall = b;
 			} else {
 			if (isArab) {
-				y = fromArab(b);
+				y = (int)fromArab(b);
 			} else {
-				y = fromRim(b);
+				y = (int)fromRim(b);
 			}
 			}
 		} catch (Exception e1) {
@@ -346,7 +346,7 @@ public class RomeArabCalc {
 									break;
 								case "TOARAB":
 									if (!isArab) {
-										z = fromRim(a);
+										z = (int)fromRim(a);
 										zStr = toArab(z);
 									} else {
 										zStr = a;
@@ -356,7 +356,7 @@ public class RomeArabCalc {
 									if (!isArab) {
 										zStr = a;
 									} else {
-										z = fromArab(a);
+										z = (int)fromArab(a);
 										zStr = toRim(z);
 									}
 									break;
