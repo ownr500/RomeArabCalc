@@ -10,20 +10,9 @@ import java.util.List;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import static quickstart.RomeArabCalc.Operations.*;
+import static quickstart.RomeArabCalcBase.Operations.*;
 
-public class RomeArabCalc {
-
-    class Operations {
-        final static String tilde = "~"; // вызов функции (справа)
-        final static String addition = "+"; // сложение
-        final static String subtraction = "-"; // вычитание
-        final static String exponentiation = "^"; // возведение левого числа в степень (справа)
-        final static String multiplication = "*"; // умножение
-        final static String division = "/"; // целочисленное деление
-        final static String remainding = "%"; // остаток от деления
-        final static String logarithm = "b"; // логарифм левого числа по основанию (справа)
-    }
+public class RomeArabCalc implements RomeArabCalcBase<Integer> {
 
     private boolean isArab;
 
@@ -144,7 +133,7 @@ public class RomeArabCalc {
 					num += h;
 					lastWasPlus = true;
 				} else {
-					if ((lastWasPlus || allowMoreForce) && 10*h >= maxH && h == Math.round(Math.pow(10, (int)logY(h, 10)))) {
+					if ((lastWasPlus || allowMoreForce) && 10*h >= maxH && h == Math.round(Math.pow(10, (int)RomeArabCalcBase.logY(h, 10)))) {
 						num -= h;
 					} else {
 						num = null;
@@ -163,41 +152,23 @@ public class RomeArabCalc {
 		}
 		///System.err.println("num: "+num);
         return num;
+    } 
+   
+    public float fastPow (float number, float powerN) {
+        return RomeArabCalcBase.fastPow(number, (int)powerN);
+	}
+    
+    public String toArab (Number x) {
+        return Integer.toString((Integer)x.intValue());
     }
 
-    public float fastPow (float number, int power) {
-        if (power == 0) {
-            return 1.0f;
-        } else if (power == 1) {
-            return number;
-        } else if (power < 0) {
-            return 1.0f / fastPow(number, -power);
-        } else if (power % 2 == 1) {
-            return fastPow(number, power - 1) * number;
-        } else {
-            return fastPow(number * number, power / 2);
-        }
+    public Number fromArab (String a) {
+        Integer x = Integer.parseInt(a);
+        return x;
     }
 
-    public static float logY(float x, float y) {
-        return (float) (Math.log(x) / Math.log(y));
-    }
-
-    protected String[] splitByFirstOperation (String expression) { // например "5+6"
-        String orPattern = "["+Pattern.quote(tilde)+Pattern.quote(addition)+Pattern.quote(subtraction)+Pattern.quote(exponentiation)+Pattern.quote(multiplication)+Pattern.quote(division)+Pattern.quote(remainding)+Pattern.quote(logarithm)+"]";
-        expression = expression.trim().replaceAll("("+orPattern+")", " $1 "); // surround operation with spaces
-
-		Pattern p = Pattern.compile("[ ]+");  
-        String[] result = p.split(expression); // разбиваем по operation: + - * /
-        if (result == null || result.length != 3) { // по условию допустима только одна операция для двух чисел
-            return null;
-        } else {
-            return new String[] {result[0], result[2], result[1].trim()}; // например ["5", "6", "+"]
-        }
-    }
-
-    protected String toRim (Number x_) { // only 0 and positive integers
-        int x = (Integer)x_;
+    public String toRim (Number x_) { // only 0 and positive integers
+        int x = (Integer)(x_.intValue());
         int multer = 1;
         if (x < 0) {
             x = -x;
@@ -210,7 +181,7 @@ public class RomeArabCalc {
         return ((multer < 0) ? "-" : "") + result;
     }
 
-    protected Number fromRim (String a) {
+    public Number fromRim (String a) {
 		if (!a.toUpperCase().equals(a)) {
 			return new Integer(2 / 0);
 		}
@@ -245,167 +216,7 @@ public class RomeArabCalc {
 		}
 		return result;
 	}
-
-    protected String toArab (Number x) {
-        return Integer.toString((Integer)x);
-    }
-
-    protected Number fromArab (String a) {
-        Integer x = Integer.parseInt(a);
-        return x;
-    }
-    
-    public static Integer factorial (int n) {
-		if (n < 0) {
-			return null;
-		} else if (n == 0 || n == 1) {
-			return 1;
-		} else {
-			return n*factorial(n-1);
-		}
-	}
-    
-    protected String _zStr (Number z, boolean isArab) {
-		String zStr;
-		try {
-			if (isArab) {
-				zStr = toArab(z); ///
-			} else {
-				zStr = toRim(z); ///
-			}
-		} catch (Exception e3) {
-			e3.printStackTrace();
-			System.err.println("ERROR: result overflow or convertion error");
-			zStr = null;
-		}
-		return zStr;
-	}
-
-    public String calc (String input) {
-		String zStr = null;
-        input = input.replaceAll("ь", "b"); // кириллица (исправление опечатки)
-        input = input.replaceAll("Ь", "b"); // кириллица (исправление опечатки)
-        String[] lr = splitByFirstOperation(input);
-
-        String a = lr[0];
-        String b = lr[1];
-        final String operation = lr[2];
-
-        int x = 0;
-        int y = 0;
-        String tildeCall = null;
-
-        isArab = true;
-        try {
-			try {
-				x = (int)fromArab(a);
-			} catch (Exception e) {
-				x = (int)fromRim(a);
-				isArab = false;
-			}
-			if (operation.equals("~")) {
-				tildeCall = b;
-			} else {
-			if (isArab) {
-				y = (int)fromArab(b);
-			} else {
-				y = (int)fromRim(b);
-			}
-			}
-		} catch (Exception e1) {
-			e1.printStackTrace();
-			System.err.println("ERROR: wrong input");
-			x = -1;
-			y = -1;
-			zStr = null;
-			return zStr.toString();
-		}
-
-        if (x<0 || y<0) { // incorrect input
-			System.err.println("ERROR: unsupported input, negative or too big numbers");
-			zStr = null;
-        } else {
-            Integer z = null;
-            try {
-				if ((operation.equals(division) || operation.equals(remainding)) && (y == 0)) {
-					z = 1 / 0;
-				} else {
-					switch (operation) {
-						case tilde:
-							switch (tildeCall) {
-								case "ABS":
-									z = (x >= 0) ? (x) : (-x);
-									zStr = _zStr(z, isArab);
-									break;
-								case "MINUS":
-									z = -x;
-									zStr = _zStr(z, isArab);
-									break;
-								case "FACTORIAL":
-									z = factorial(x); ///
-									zStr = _zStr(z, isArab);
-									break;
-								case "TOARAB":
-									if (!isArab) {
-										z = (int)fromRim(a);
-										zStr = toArab(z);
-									} else {
-										zStr = a;
-									}
-									break;
-								case "TOROMAN":
-									if (!isArab) {
-										zStr = a;
-									} else {
-										z = (int)fromArab(a);
-										zStr = toRim(z);
-									}
-									break;
-								case "TORIM":
-									zStr = "В Италию, на родину музыки!";
-									break;
-								default:
-									zStr = null;								
-							}
-							return zStr.toString();
-						case addition:
-							z = x + y;
-							break;
-						case subtraction:
-							z = x - y;
-							break;
-						case exponentiation:
-							z = (int)fastPow(x, y);
-							break;
-						case multiplication:
-							z = x * y;
-							break;
-						case division:
-							z = (int)(x / y);
-							break;
-						case remainding:
-							z = x % y;
-							break;
-						case logarithm:
-							z = (int)logY(x, y);
-							break;
-						default:
-							z = 1 / 0; // exception for unsupported operation
-					}
-            }
-			} catch (Exception e2) {
-				System.err.println("ERROR: unsupported operation or error within operation");
-				z = null;
-			}
-			if (z != null) {
-				zStr = _zStr(z, isArab);
-			} else {
-				zStr = null;
-			}
-        }
-        return zStr.toString();  // toString for throws exception in case of wrong null
-    }
-
+        
     public static void main(String[] args) {	
         String input = String.join(" ", args);
         System.out.println("Input: " + input);
