@@ -1,0 +1,46 @@
+<html>
+<head>
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="shortcut icon" href="logo.png">
+<meta charset="utf-8" />
+<title>RomeArabCalc js</title>
+
+<script src="./deps/jquery-1.10.0.min.js"></script>
+
+<script src="../target/candies/j4ts-0.7.0-SNAPSHOT/bundle.js"></script>
+<script src="../target/candies/j4ts-0.7.0-SNAPSHOT/Manifest.js"></script>
+
+<style type="text/css">
+    * {
+        font-family: "sans-serif";
+        font-size: 18px;
+    }
+</style>
+
+</head>
+
+<body>
+
+	<!-- used to show the jQuery candy (see the QuickStart class) -->
+	<p id="target"></p>
+
+	<!-- The transpiled output of the QuickStart.java source file (mvn generate-sources) -->
+	<script type="text/javascript"
+		src="../target/js/bundle.js"></script>
+
+    <label>a:</label><input type="button" value="~TOROMAN" onclick="$('#a').val(quickstart.Main.calc(''+$('#a').val()+''+$(this).val()));" /><input id="a" type="text" value="4321" /><input type="button" value="~TOARAB" onclick="$('#a').val(quickstart.Main.calc(''+$('#a').val()+''+$(this).val()));" />
+    <hr />
+    <label>x:</label><input id="x" type="text" value="VII" /><select id="operator">
+        <option selected>+</option>
+        <option>-</option>
+        <option>*</option>
+        <option>/</option>
+        <option>%</option>
+        <option>b</option>
+        <option>^</option>
+    </select><label>y:</label><input id="y" type="text" value="III" /><input type="button" value="= ?" onclick="$('#r').val(quickstart.Main.calc(''+$('#x').val()+''+$('#operator').val()+''+$('#y').val()));" /><input id="r" type="text" value="" disabled />
+    <hr />
+    
+
+</body>
+</html>

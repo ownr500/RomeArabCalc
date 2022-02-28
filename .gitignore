@@ -3,3 +3,11 @@ out/
 *.iml
 *.jar
 *.class
+/bin/
+/target/
+.generated
+.ts
+.jsweet
+.project
+.settings
+.classpath
