@@ -46,7 +46,7 @@ Java 8+ JDK
 
 ## Rules of Roman numeral system
 
-- В настоящее время в римской системе счисления используются следующие знаки:
+- As of today following characters may be used in the Roman numeral system:
 
     -   I = 1; 
     -   V = 5; 
@@ -56,30 +56,30 @@ Java 8+ JDK
     -   D = 500;
     -   M = 1000.
 
-#### Все целые числа от 1 до 3999 записываются с помощью приведенных выше цифр. При этом:
+#### All integers from 1 to 3999 are represented using the digits and numbers from above with following rules:
 
--   если большая цифра стоит перед меньшей, они складываются:
+-   if the larger digit comes before the smaller one, they add up:
 
     -   VI = 5 + 1 = 6;
     -   XV = 10 + 5 = 15;
     -   LX = 50 + 10 = 60;
     -   CL = 100 + 50 = 150;
 
--   если меньшая цифра стоит перед большей (в этом случае она не может повторяться), то меньшая вычитается из большей; вычитаться могут только цифры, обозначающие 1 или степени 10; уменьшаемым может быть только цифра, ближайшая в числовом ряду к вычитаемой:
+-   if the smaller digit comes before the larger one (in which case it cannot be repeated), then the smaller one is subtracted from the larger one; only numbers representing 1 or powers of 10 can be subtracted; only the digit that is next in the number series to the one to be deducted may be reduced:
 
     -   IV = 5 - 1 = 4;
     -   IX = 10 - 1 = 9;
     -   XL = 50 - 10 = 40;
     -   XC = 100 - 10 = 90;
 
--   цифры V, L, D не могут повторяться; цифры I, X, C, M могут повторяться не более трех раз подряд:
+-   digits V, L, D cannot be repeated; digits I, X, C, M may be repeated not more than 3 times in a row:
 
     -   VIII = 8;
     -   LXXX = 80;
     -   DCCC = 800;
     -   MMMD = 3500.
 
--   черта над цифрой увеличивает ее значение в 1 000 раз:
+-   A bar over a number increases its value by 1,000 times:
 
     -   V̅ = 5000;
     -   X̅ = 10000;
@@ -88,7 +88,7 @@ Java 8+ JDK
     -   D̅ = 500000;
     -   M̅ = 1000000.
 
-- Основные римские числа
+- Basic Roman numerals
 
     -   1 = I\
     2 = II\
